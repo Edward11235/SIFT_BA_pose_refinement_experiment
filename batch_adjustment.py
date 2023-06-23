@@ -24,7 +24,7 @@ def fun(params, n, m, points_2d, points_3d):
     return (projected_points - points_2d).ravel()
 
 # Assume you have some 3D points
-points_3d = np.random.rand(10, 3)
+points_3d = np.random.rand(50, 3)
 
 # And you know the true parameters
 true_params = np.array([320, 240, 1000, 0, 0, 0, 0, 0, 0], dtype=np.float64)  # Ensure params are float64
@@ -33,6 +33,7 @@ true_params = np.array([320, 240, 1000, 0, 0, 0, 0, 0, 0], dtype=np.float64)  # 
 points_2d = project(points_3d, true_params)
 points_2d_with_noise = points_2d.copy()
 points_2d_with_big_noise = points_2d.copy()
+points_2d_with_five_nonsense_point = points_2d.copy()
 
 for point in points_2d_with_noise:
     point[0] += np.random.normal(0,1)
@@ -42,6 +43,10 @@ for point in points_2d_with_big_noise:
     point[0] += np.random.normal(0,10)
     point[1] += np.random.normal(0,10)
 
+for point in points_2d_with_five_nonsense_point[-5:]:
+    point[0] += np.random.normal(0,1000)
+    point[1] += np.random.normal(0,1000)
+
 # You want to find these parameters by bundle adjustment
 initial_estimation = np.array([300, 200, 900, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], dtype=np.float64)  # Ensure params are float64
 
@@ -49,6 +54,7 @@ initial_estimation = np.array([300, 200, 900, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], dty
 res = least_squares(fun, initial_estimation, args=(2, 3, points_2d, points_3d))
 res_with_noise = least_squares(fun, initial_estimation, args=(2, 3, points_2d_with_noise, points_3d))
 res_with_big_noise = least_squares(fun, initial_estimation, args=(2, 3, points_2d_with_big_noise, points_3d))
+res_with_five_nonsense = least_squares(fun, initial_estimation, args=(2, 3, points_2d_with_five_nonsense_point, points_3d))
 
 # Print the true parameters and the ones estimated by bundle adjustment
 print('True pose: ', true_params)
@@ -60,3 +66,5 @@ print('#######################################')
 print('Estimated pose when noise occurs: ', res_with_noise.x)
 print('#######################################')
 print('Estimated pose when big noise occurs: ', res_with_big_noise.x)
+print('#######################################')
+print('Estimated pose with five nonsense point: ', res_with_five_nonsense.x)
