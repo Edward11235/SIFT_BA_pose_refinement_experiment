@@ -2,8 +2,8 @@ import cv2
 from matplotlib import pyplot as plt
 
 # Load images 
-image_one_path = "/home/nerf-bridge/Desktop/OBA/data/chair.png" 
-image_two_path = "/home/nerf-bridge/Desktop/OBA/data/chair_GT.png"  
+image_one_path = "/home/nerf-bridge/Desktop/OBA/experiment_images/image_render"  
+image_two_path = "/home/nerf-bridge/Desktop/OBA/experiment_images/image_GT"  
 img1 = cv2.imread(image_one_path, 0)  # Image 1 
 img2 = cv2.imread(image_two_path, 0)  # Image 2
 
