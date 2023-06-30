@@ -1,0 +1,11 @@
+import cv2
+import numpy as np
+
+# load the depth image
+depth_img_path = 'path_to_your_depth_image.png'
+depth_img = cv2.imread(depth_img_path, cv2.IMREAD_UNCHANGED) # cv2.IMREAD_UNCHANGED is important to read the image as 16-bit
+
+# scale to convert to meters
+depth_img_meters = depth_img * 0.001
+
+# now depth_img_meters contains the depth in meters
